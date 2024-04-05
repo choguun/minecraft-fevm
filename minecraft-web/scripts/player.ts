@@ -322,7 +322,6 @@ modal = createWeb3Modal({
   onKeyDown = async (event: { code: any; key: any; }) => {
     const modalState = this.modal.getState();
     const checkNFT = await this.NFTBalance();
-    console.log(checkNFT);
 
     if (!this.controls.isLocked && modalState.selectedNetworkId !== undefined && typeof modalState.selectedNetworkId !== undefined && checkNFT === true) {
       this.controls.lock();

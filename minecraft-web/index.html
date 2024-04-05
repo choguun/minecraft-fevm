@@ -9,10 +9,10 @@
     <link rel="stylesheet" href="./style.css">
   </head>
   <body x-data>
-    <div id="body" x-data="{ address: '', isMinting: false, modelOpen: false, isConnected: false, checkConnection: false, tokenBalance: 0, landId: 0, isShowToast:false }" @notify="isShowToast=!isShowToast" @hideToast="isShowToast=false">
+    <div id="body" x-data="{ isMinting: false, modelOpen: false, isConnected: false, isConnected2: false, checkConnection: false, tokenBalance: 0, landId: 0, isShowToast:false }" @notify="isShowToast=!isShowToast" @hideToast="isShowToast=false">
       
       <!-- Navbar -->
-      <nav x-effect="if(isConnected){modelOpen = !await NFTBalance(); tokenBalance = await fetchTokenBalance(); if(!modelOpen){landId = fetchLandId();}}" id="navbar">
+      <nav x-effect="console.log(isConnected); isConnected2 = await checkConnectedWallet(); if(isConnected || isConnected2){modelOpen = !await NFTBalance(); tokenBalance = await fetchTokenBalance(); if(!modelOpen){landId = fetchLandId();}}" id="navbar">
         <div class="mt-1 ml-1 p-2 inline-block bg-green-500">
           <span>In-Game Token</span>
           <span><span x-text="tokenBalance"></span> $CRAFT</span>
@@ -164,7 +164,7 @@
                 <div class="flex items-center justify-between space-x-4">
                     <h1 class="text-xl font-medium text-gray-800 mx-auto">Connect Wallet</h1>
                 </div>
-                <div class="mt-5">
+                  <div class="mt-5">
                     <div class="flex items-center justify-between mt-3">
                       <w3m-button data-check="abc" @click="isConnected=true" id="wallet-btn" class="text-center mx-auto px-3 py-2"/>
                     </div>
