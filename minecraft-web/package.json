@@ -1,0 +1,27 @@
+{
+  "name": "minecraft-test-2",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite --host 127.0.0.1",
+    "build": "vite build",
+    "preview": "vite preview --host 127.0.0.1"
+  },
+  "devDependencies": {
+    "@types/alpinejs": "^3.13.9",
+    "@types/three": "^0.162.0",
+    "typescript": "^5.4.3",
+    "vite": "^4.4.5"
+  },
+  "dependencies": {
+    "@lighthouse-web3/sdk": "^0.3.0",
+    "@wagmi/connectors": "^4.1.18",
+    "@wagmi/core": "^2.6.9",
+    "@web3modal/wagmi": "^4.1.1",
+    "alpinejs": "^3.13.7",
+    "axios": "^1.6.8",
+    "three": "^0.156.1",
+    "viem": "^2.8.18"
+  }
+}

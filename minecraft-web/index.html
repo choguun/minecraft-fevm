@@ -1,0 +1,247 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/logo.jpeg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>MINECRAFT FEVM</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="./style.css">
+  </head>
+  <body x-data>
+    <div id="body" x-data="{ isMinting: false, modelOpen: false, isConnected: false, tokenBalance: 0, landId: 0, isShowToast:false }" @notify="isShowToast=!isShowToast" @hideToast="isShowToast=false">
+      
+      <!-- Navbar -->
+      <nav x-effect="if(isConnected){modelOpen = NFTBalance(); tokenBalance = fetchTokenBalance(); landId = fetchLandId();}" id="navbar">
+        <div class="mt-1 ml-1 p-2 inline-block bg-green-500">
+          <span>In-Game Token</span>
+          <span><span x-text="tokenBalance"></span> $CRAFT</span>
+        </div>
+        <a target="_blank" class="bg-indigo-500 p-3 cursor-pointer" href="https://faucet.calibnet.chainsafe-fil.io/funds.html">FAUCET tFIL</a>
+        <w3m-button class="inline-block mt-1 mr-1 float-right" id="wallet-btn"/>
+      </nav>
+      <!-- Navbar -->
+
+      <!-- ThreeJS Render -->
+      <div id="app"></div>
+      <div id="info">
+        <div id="info-player-position"></div>
+      </div>
+      <div id="health-container">
+        <!-- <div id="health-bar">
+          <img class="inline-block w-[100px]" id="toolbar-1" src="textures/heart.png"></img>
+          <img class="inline-block w-[100px]" id="toolbar-2" src="textures/heart.png"></img>
+          <img class="inline-block w-[100px]" id="toolbar-3" src="textures/heart.png"></img>
+          <img class="inline-block w-[100px]" id="toolbar-4" src="textures/heart.png"></img>
+          <img class="inline-block w-[100px]" id="toolbar-5" src="textures/heart.png"></img>
+        </div> -->
+      </div>
+      <div id="toolbar-container">
+        <div id="toolbar">
+          <div>
+            <span class="z-100 absolute ml-1">1</span>
+            <img class="toolbar-icon" id="toolbar-1" src="textures/grass.png"></img>
+          </div>
+          <div>
+            <span class="z-100 absolute ml-1">2</span>
+            <img class="toolbar-icon" id="toolbar-2" src="textures/dirt.png"></img>
+          </div>
+          <div>
+            <span class="z-100 absolute ml-1">3</span>
+            <img class="toolbar-icon" id="toolbar-3" src="textures/stone.png"></img>
+          </div>
+          <div>
+            <span class="z-100 absolute ml-1">4</span>
+            <img class="toolbar-icon" id="toolbar-4" src="textures/coal_ore.png"></img>
+          </div>
+          <!-- <img class="toolbar-icon" id="toolbar-5" src="textures/iron_ore.png"></img> -->
+          <div>
+            <span class="z-100 absolute ml-1">5</span>
+            <img class="toolbar-icon" id="toolbar-5" src="textures/tree_top.png"></img>
+          </div>
+          <div>
+            <span class="z-100 absolute ml-1">6</span>
+            <img class="toolbar-icon" id="toolbar-6" src="textures/leaves.png"></img>
+          </div>
+          <!-- <img class="toolbar-icon" id="toolbar-8" src="textures/sand.png"></img> -->
+          <div>
+            <span class="z-100 absolute ml-1">0</span>
+            <img class="toolbar-icon selected" id="toolbar-0" src="textures/pickaxe.png"></img>
+          </div>
+        </div>
+      </div>
+
+      <!-- UI -->
+      <div class="ui">
+
+        <!-- Quest -->
+        <div class="quest" id="quest">
+          <div class="quest-inner">
+            <div class="quest-title">Quests</div>
+            <div class="quest-row">
+              <div class="quest-item text-center" id="quest-1">
+                <span class="text-white font-2xl">Daily Check-in</span><br/>
+                <span class="text-white font-2xl">0/1</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- Quest -->
+
+        <!-- Inventory -->
+        <div class="inventory" id="inventory">
+          <div class="inventory-inner">
+            <div class="inventory-title">Inventory</div>
+            <div class="inventory-row">
+              <div class="inventory-item" id="inventory-1" ></div>
+              <div class="inventory-item" id="inventory-2" ></div>
+              <div class="inventory-item" id="inventory-3" ></div>
+              <div class="inventory-item" id="inventory-4" ></div>
+              <div class="inventory-item" id="inventory-5" ></div>
+              <div class="inventory-item" id="inventory-6" ></div>
+            </div>
+            <div class="inventory-row">
+              <div class="inventory-item" id="inventory-7" ></div>
+              <div class="inventory-item" id="inventory-8" ></div>
+              <div class="inventory-item" id="inventory-9" ></div>
+              <div class="inventory-item" id="inventory-10" ></div>
+              <div class="inventory-item" id="inventory-11" ></div>
+              <div class="inventory-item" id="inventory-12" ></div>
+            </div>
+            <div class="inventory-row">
+              <div class="inventory-item" id="inventory-13" ></div>
+              <div class="inventory-item" id="inventory-14" ></div>
+              <div class="inventory-item" id="inventory-15" ></div>
+              <div class="inventory-item" id="inventory-16" ></div>
+              <div class="inventory-item" id="inventory-17" ></div>
+              <div class="inventory-item" id="inventory-18" ></div>
+            </div>
+            <div>
+              <button type="button" class="mt-3 py-2 w-full bg-green-500 rounded-lg">Update Inventory</button>
+            </div>
+          </div>
+        </div>
+        <!-- Inventory -->
+      </div>
+      <!-- UI -->
+      
+      <div id="overlay">
+        <div id="instructions">
+          <h1>MINECRAFT FEVM</h1>
+          <h2>PRESS ANY KEY TO START</h2>
+          <br><br>
+          CONTROLS<br>
+          ------------------<br>
+          WASD - Move<br>
+          SPACE - Jump<br>
+          I - Inventory<br>
+          R - Reset Camera<br>
+          U - Toggle UI<br>
+          0 - Pickaxe<br>
+          1-6 - Select Block<br>
+          F1 - Save Game<br>
+          F2 - Load Game<br>
+        </div>
+      </div>
+      <div id="status"></div>
+      <div id="land-token">Land ID: <span x-text="landId"></span></div>
+      <div id="version">Ver. 0.1.0</div>
+       <!-- ThreeJS Render -->
+
+      <!-- Modal Connect Wallet -->
+      <div x-show="!isConnected" class="fixed inset-0 z-100 overflow-y-auto" aria-labelledby="modal-title" role="dialog" aria-modal="true">
+        <div class="flex items-end justify-center min-h-screen px-4 text-center md:items-center sm:block sm:p-0">
+            <div x-cloak x-show="!isConnected" 
+                x-transition:enter="transition ease-out duration-300 transform"
+                x-transition:enter-start="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95" 
+                x-transition:enter-end="opacity-100 translate-y-0 sm:scale-100"
+                x-transition:leave="transition ease-in duration-200 transform"
+                x-transition:leave-start="opacity-100 translate-y-0 sm:scale-100" 
+                x-transition:leave-end="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
+                class="inline-block w-full max-w-xl p-8 my-20 overflow-hidden text-left transition-all transform bg-white rounded-lg shadow-xl 2xl:max-w-2xl"
+            >
+
+                <div class="flex items-center justify-between space-x-4">
+                    <h1 class="text-xl font-medium text-gray-800 mx-auto">Connect Wallet</h1>
+                </div>
+                <div class="mt-5">
+                    <div class="flex items-center justify-between mt-3">
+                      <w3m-button data-check="abc" @click="isConnected=true;" id="wallet-btn" class="text-center mx-auto px-3 py-2"/>
+                    </div>
+                  </div>
+            </div>
+        </div>
+      </div>
+      <!-- Modal Connect Wallet -->
+
+      <!-- Modal Mint Land -->
+      <div x-show="modelOpen" class="fixed inset-0 z-50 overflow-y-auto" aria-labelledby="modal-title" role="dialog" aria-modal="true">
+        <div class="flex items-end justify-center min-h-screen px-4 text-center md:items-center sm:block sm:p-0">
+            <!-- <div x-cloak @click="modelOpen = false" x-show="modelOpen" 
+                x-transition:enter="transition ease-out duration-300 transform"
+                x-transition:enter-start="opacity-0" 
+                x-transition:enter-end="opacity-100"
+                x-transition:leave="transition ease-in duration-200 transform"
+                x-transition:leave-start="opacity-100" 
+                x-transition:leave-end="opacity-0"
+                class="fixed inset-0 transition-opacity bg-gray-500 bg-opacity-40" aria-hidden="true"
+            ></div> -->
+
+            <div x-cloak x-show="modelOpen" 
+                x-transition:enter="transition ease-out duration-300 transform"
+                x-transition:enter-start="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95" 
+                x-transition:enter-end="opacity-100 translate-y-0 sm:scale-100"
+                x-transition:leave="transition ease-in duration-200 transform"
+                x-transition:leave-start="opacity-100 translate-y-0 sm:scale-100" 
+                x-transition:leave-end="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
+                class="inline-block w-full max-w-xl p-8 my-20 overflow-hidden text-left transition-all transform bg-white rounded-lg shadow-xl 2xl:max-w-2xl"
+            >
+
+                <div class="flex items-center justify-between space-x-4">
+                    <h1 class="text-xl font-medium text-gray-800 mx-auto">Mint Land NFT</h1>
+
+                    <!-- <button @click="modelOpen = false" class="text-gray-600 focus:outline-none hover:text-gray-700">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                    </button> -->
+                </div>
+                <div class="mt-5">
+                    <div class="mt-4 mb-5">
+                        <div class="mt-4 space-y-5">
+                            <img class="w-1/2 mx-auto" src="./imgs/land_logo.jpeg" alt="land nft"/>
+                        </div>
+                    </div>
+                    <div class="mx-auto text-center">
+                      <span class="mt-5 text-center">Price: 0.01 tFIL</span>
+                    </div>
+                    <div class="flex justify-end mt-3">
+                        <button @click="isMinting = true; mintLand();" type="button" class="w-full px-3 py-2 text-sm tracking-wide text-white capitalize transition-colors duration-200 transform bg-indigo-500 rounded-md dark:bg-indigo-600 dark:hover:bg-indigo-700 dark:focus:bg-indigo-700 hover:bg-indigo-600 focus:outline-none focus:bg-indigo-500 focus:ring focus:ring-indigo-300 focus:ring-opacity-50">
+                          <div class="flex items-center justify-center m-[10px]">
+                            <div x-show="!isMinting">
+                              <div class="">MINT</div>
+                            </div>
+                            <div x-show="isMinting">
+                              <div class="inline-block h-5 w-5 border-t-transparent border-solid animate-spin rounded-full border-white border-4"></div>  
+                              <div class="inline-block ml-2">MINT...</div>
+                            </div>
+                          </div>
+                        </button>
+                    </div>
+                  </div>
+            </div>
+        </div>
+      </div>
+      <!-- Modal Mint Land -->
+
+      <!-- Toast -->
+      <div x-show="isShowToast" id="toast-container" class="fixed z-100 overflow-y-auto bg-black inset-0 opacity-90 flex items-center justify-center">
+        <span class="text-4xl text-white mx-auto animate-pulse">
+          Loading...
+        </span>
+      </div>
+      <!-- Toast -->
+    </div>
+    <script type="module" src="./scripts/main.ts"></script>
+  </body>
+</html>
