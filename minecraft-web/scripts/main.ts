@@ -20,6 +20,7 @@ declare global {
   interface Window {
     Alpine: any;
     modelOpen: any;
+    walletAddress: () => Promise<any>;
     NFTBalance: () => Promise<any>;
     fetchTokenBalance: () => Promise<any>;
     mintLand: () => Promise<void>;
@@ -78,16 +79,24 @@ const modal =  createWeb3Modal({
 * Alpine.js setup
 */
 window.Alpine = Alpine;
-
-const client = createWalletClient({
-  chain: filecoinCalibration,
-  transport
-: custom(window.ethereum!)
-}).extend(publicActions);
-
 window.modelOpen = false;
 
+window.walletAddress = async (): Promise<any> => {
+  const client = createWalletClient({
+    chain: filecoinCalibration,
+    transport
+  : custom(window.ethereum!)
+  }).extend(publicActions);
+  const [address] = await client.getAddresses();
+  return address;
+}
+
 window.NFTBalance = async (): Promise<any> => {
+  const client = createWalletClient({
+    chain: filecoinCalibration,
+    transport
+  : custom(window.ethereum!)
+  }).extend(publicActions);
   try {
     const [address] = await client.getAddresses();
     const result = await readContract(config, {
@@ -96,7 +105,7 @@ window.NFTBalance = async (): Promise<any> => {
         functionName: 'balanceOf',
         args: [address]
     });
-    return result > 0 ? false : true;
+    return result > 0 ? true : false;
   } catch (error) {
     console.error(error);
   }
@@ -104,6 +113,11 @@ window.NFTBalance = async (): Promise<any> => {
 
 window.fetchTokenBalance = async (): Promise<any> => {
   document.dispatchEvent(new CustomEvent('loadModal:open'));
+  const client = createWalletClient({
+    chain: filecoinCalibration,
+    transport
+  : custom(window.ethereum!)
+  }).extend(publicActions);
   try {
     const [address] = await client.getAddresses();
     const result = await readContract(config, {
@@ -123,6 +137,11 @@ window.fetchTokenBalance = async (): Promise<any> => {
 }
 
 window.fetchLandId = async (): Promise<any> => {
+  const client = createWalletClient({
+    chain: filecoinCalibration,
+    transport
+  : custom(window.ethereum!)
+  }).extend(publicActions);
   try {
     const [address] = await client.getAddresses();
     const result = await readContract(config, {
@@ -135,10 +154,44 @@ window.fetchLandId = async (): Promise<any> => {
   } catch (error) {
     console.error(error);
   }
-
 }
 
 window.mintLand = async () => {
+  const client = createWalletClient({
+    chain: filecoinCalibration,
+    transport
+  : custom(window.ethereum!)
+  }).extend(publicActions);
+  try {
+    const [address] = await client.getAddresses();
+    const { request } = await client.simulateContract({
+      account: address,
+      address: LandAddress,
+      abi: LandAbi,
+      functionName: 'mint',
+      args: ["https://gateway.lighthouse.storage/ipfs/QmRBg7KpJ6eK6d7wMsSL9jDWnrkgt86A6Fq7ZotVHNUhUf"],
+      value: parseEther('0.01')
+    });
+    const txn = await client.writeContract(request);
+
+    const result = await client.waitForTransactionReceipt({ hash: txn })
+    if (result.status === "success") {
+        window.modelOpen = false;
+        alert('Land minted successfully.');
+        window.location.reload();
+    }
+  } catch (error) {
+    console.error(error);
+    alert(error);
+  }
+}
+
+window.mintLand = async () => {
+  const client = createWalletClient({
+    chain: filecoinCalibration,
+    transport
+  : custom(window.ethereum!)
+  }).extend(publicActions);
   try {
     const [address] = await client.getAddresses();
     const { request } = await client.simulateContract({
@@ -165,9 +218,9 @@ window.mintLand = async () => {
 
 window.checkConnectedWallet = async () => {
   const modalState = modal.getState();
-  let connected = false;
+  let connected = true;
   if(modalState.selectedNetworkId === undefined || typeof modalState.selectedNetworkId === undefined) {
-    connected = true;
+    connected = false;
   }
 
   return connected;

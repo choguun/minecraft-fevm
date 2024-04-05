@@ -5,7 +5,9 @@ import { blocks } from './blocks';
 import { createWeb3Modal, defaultWagmiConfig } from '@web3modal/wagmi';
 import { filecoinCalibration } from 'viem/chains';
 import { readContract } from '@wagmi/core';
-import { createWalletClient, custom, parseEther, publicActions } from 'viem';
+import { createWalletClient, custom, publicActions } from 'viem';
+import { config } from './config';
+import { LandAbi } from '../abi/LandAbi';
 
 const CENTER_SCREEN = new THREE.Vector2();
 
@@ -296,17 +298,38 @@ modal = createWeb3Modal({
   : custom(window.ethereum!)
   }).extend(publicActions);
 
+  LandAddress = import.meta.env.VITE_LAND_CONTRACT_ADDRESS;
+
+  NFTBalance = async (): Promise<any> => {
+    try {
+      const [address] = await this.client.getAddresses();
+      const result = await readContract(config, {
+          abi: LandAbi,
+          address: this.LandAddress,
+          functionName: 'balanceOf',
+          args: [address]
+      });
+      return result > 0 ? true : false;
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
   /**
    * Event handler for 'keyup' event
    * @param {KeyboardEvent} event 
    */
   onKeyDown = async (event: { code: any; key: any; }) => {
     const modalState = this.modal.getState();
+    const checkNFT = await this.NFTBalance();
+    console.log(checkNFT);
 
-    if (!this.controls.isLocked && modalState.selectedNetworkId !== undefined && typeof modalState.selectedNetworkId !== undefined) {
+    if (!this.controls.isLocked && modalState.selectedNetworkId !== undefined && typeof modalState.selectedNetworkId !== undefined && checkNFT === true) {
       this.controls.lock();
     } else if(modalState.selectedNetworkId === undefined || typeof modalState.selectedNetworkId === undefined) {
       alert('Please connect wallet.');
+    } else if(checkNFT !== true || checkNFT === undefined){
+      alert('Please mint land.');
     }
 
     switch (event.code) {
