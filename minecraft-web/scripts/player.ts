@@ -292,17 +292,16 @@ modal = createWeb3Modal({
     }
   }
 
-  client = createWalletClient({
-    chain: filecoinCalibration,
-    transport
-  : custom(window.ethereum!)
-  }).extend(publicActions);
-
   LandAddress = import.meta.env.VITE_LAND_CONTRACT_ADDRESS;
 
   NFTBalance = async (): Promise<any> => {
+    const client = createWalletClient({
+      chain: filecoinCalibration,
+      transport
+    : custom(window.ethereum!)
+    }).extend(publicActions);
     try {
-      const [address] = await this.client.getAddresses();
+      const [address] = await client.getAddresses();
       const result = await readContract(config, {
           abi: LandAbi,
           address: this.LandAddress,
