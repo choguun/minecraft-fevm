@@ -97,6 +97,7 @@ export class Player extends THREE.Vector3 {
     document.addEventListener('keyup', this.onKeyUp.bind(this));
     document.addEventListener('keydown', this.onKeyDown.bind(this));
     document.addEventListener('mousedown', this.onMouseDown.bind(this));
+    document.addEventListener('keypress', this.onKeyPress.bind(this));
   }
 
   /*
@@ -315,71 +316,81 @@ modal = createWeb3Modal({
   }
 
   /**
-   * Event handler for 'keyup' event
+   * Event handler for 'keypress' event
+   * @param {KeyboardEvent} event 
+   */
+  onKeyPress = async (event: { code: any; key: any; }) => {
+    const modalState = this.modal.getState();
+    const checkNFT = await this.NFTBalance();
+
+    if(modalState.selectedNetworkId !== undefined && checkNFT !== true) {
+      alert('Please mint Land NFT.');
+      window.location.reload();
+    }
+  }
+
+  /**
+   * Event handler for 'keydown' event
    * @param {KeyboardEvent} event 
    */
   onKeyDown = async (event: { code: any; key: any; }) => {
     const modalState = this.modal.getState();
-    const checkNFT = await this.NFTBalance();
 
-    if (!this.controls.isLocked && modalState.selectedNetworkId !== undefined && typeof modalState.selectedNetworkId !== undefined && checkNFT === true) {
+    if (!this.controls.isLocked && modalState.selectedNetworkId !== undefined && typeof modalState.selectedNetworkId !== undefined) {
       this.controls.lock();
     } else if(modalState.selectedNetworkId === undefined || typeof modalState.selectedNetworkId === undefined) {
-      alert('Please connect wallet.');
-    } else if(checkNFT !== true || checkNFT === undefined){
-      alert('Please mint land.');
+      alert('Please connect Wallet.');
     } else {
+      switch (event.code) {
+        case 'Digit0':
+        case 'Digit1':
+        case 'Digit2':
+        case 'Digit3':
+        case 'Digit4':
+        case 'Digit5':
+        case 'Digit6':
+        // case 'Digit7':
+        // case 'Digit8':
+          // Update the selected toolbar icon
+          document.getElementById(`toolbar-${this.activeBlockId}`)?.classList.remove('selected');
+          document.getElementById(`toolbar-${event.key}`)?.classList.add('selected');
 
-    switch (event.code) {
-      case 'Digit0':
-      case 'Digit1':
-      case 'Digit2':
-      case 'Digit3':
-      case 'Digit4':
-      case 'Digit5':
-      case 'Digit6':
-      // case 'Digit7':
-      // case 'Digit8':
-        // Update the selected toolbar icon
-        document.getElementById(`toolbar-${this.activeBlockId}`)?.classList.remove('selected');
-        document.getElementById(`toolbar-${event.key}`)?.classList.add('selected');
+          this.activeBlockId = Number(event.key);
 
-        this.activeBlockId = Number(event.key);
+          // Update the pickaxe visibility
+          this.tool.container.visible = (this.activeBlockId === 0);
 
-        // Update the pickaxe visibility
-        this.tool.container.visible = (this.activeBlockId === 0);
-
-        break;
-      case 'KeyW':
-        this.input.z = this.maxSpeed;
-        break;
-      case 'KeyA':
-        this.input.x = -this.maxSpeed;
-        break;
-      case 'KeyS':
-        this.input.z = -this.maxSpeed;
-        break;
-      case 'KeyD':
-        this.input.x = this.maxSpeed;
-        break;
-      case 'KeyR':
-        if (this.repeat) break;
-        this.position.y = 32;
-        this.velocity.set(0, 0, 0);
-        break;
-      case 'Space':
-        if (this.onGround) {
-          this.velocity.y += this.jumpSpeed;
-        }
-        break;
-      case 'KeyI':
-        if(this.controls.isLocked) {
-          this.controls.unlock();
-        } else {
-          this.controls.lock();
-        }
-        break;
-    }
+          break;
+        case 'KeyW':
+          this.input.z = this.maxSpeed;
+          break;
+        case 'KeyA':
+          this.input.x = -this.maxSpeed;
+          break;
+        case 'KeyS':
+          this.input.z = -this.maxSpeed;
+          break;
+        case 'KeyD':
+          this.input.x = this.maxSpeed;
+          break;
+        case 'KeyR':
+          if (this.repeat) break;
+          this.position.y = 32;
+          this.velocity.set(0, 0, 0);
+          break;
+        case 'Space':
+          if (this.onGround) {
+            this.velocity.y += this.jumpSpeed;
+          }
+          break;
+        case 'KeyI':
+          if(this.controls.isLocked) {
+            this.controls.unlock();
+          } else {
+            this.controls.lock();
+          }
+          break;
+      }
     }
   }
 

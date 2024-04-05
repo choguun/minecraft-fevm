@@ -15,6 +15,7 @@ import { config } from './config';
 import { LandAbi } from '../abi/LandAbi';
 import { WorldAbi } from '../abi/WorldAbi';
 import { TokenAbi } from '../abi/TokenAbi';
+import { RegistryAbi } from '../abi/RegistryAbi';
 
 declare global {
   interface Window {
@@ -27,6 +28,8 @@ declare global {
     openWallet: () => void;
     checkConnectedWallet: () => any;
     fetchLandId: () => Promise<any>;
+    checkAccount: () => Promise<any>;
+    createAccount: (tokenId: any) => Promise<void>;
   }
 }
 
@@ -46,6 +49,8 @@ const projectId = import.meta.env.VITE_PROJECT_ID;
 const LandAddress = import.meta.env.VITE_LAND_CONTRACT_ADDRESS;
 const WorldAddress = import.meta.env.VITE_WORLD_CONTRACT_ADDRESS;
 const TokenAddress = import.meta.env.VITE_TOKEN_CONTRACT_ADDRESS;
+const REGISTRY_CONTRACT = import.meta.env.VITE_REGISTRY_CONTRACT_ADDRESS;
+const CHAIN_ID = import.meta.env.VITE_CHAIN_ID;
 
 // 2. Create wagmiConfig
 const metadata = {
@@ -176,9 +181,9 @@ window.mintLand = async () => {
 
     const result = await client.waitForTransactionReceipt({ hash: txn })
     if (result.status === "success") {
-        window.modelOpen = false;
+        // window.modelOpen = false;
         alert('Land minted successfully.');
-        window.location.reload();
+        // window.location.reload();
     }
   } catch (error) {
     console.error(error);
@@ -186,7 +191,17 @@ window.mintLand = async () => {
   }
 }
 
-window.mintLand = async () => {
+// window.checkAccount = async () => {
+//   function account(
+//     address implementation,
+//     uint256 chainId,
+//     address tokenContract,
+//     uint256 tokenId,
+//     uint256 salt
+// )
+// }
+
+window.createAccount = async (tokenId: any) => {
   const client = createWalletClient({
     chain: filecoinCalibration,
     transport
@@ -196,18 +211,18 @@ window.mintLand = async () => {
     const [address] = await client.getAddresses();
     const { request } = await client.simulateContract({
       account: address,
-      address: LandAddress,
-      abi: LandAbi,
-      functionName: 'mint',
-      args: ["https://gateway.lighthouse.storage/ipfs/QmRBg7KpJ6eK6d7wMsSL9jDWnrkgt86A6Fq7ZotVHNUhUf"],
-      value: parseEther('0.01')
+      address: REGISTRY_CONTRACT,
+      abi: RegistryAbi,
+      functionName: 'createAccount',
+      args: [REGISTRY_CONTRACT, BigInt(CHAIN_ID), LandAddress, tokenId, BigInt(1), '0x']
     });
+
     const txn = await client.writeContract(request);
 
     const result = await client.waitForTransactionReceipt({ hash: txn })
     if (result.status === "success") {
         window.modelOpen = false;
-        alert('Land minted successfully.');
+        alert('Create Token Bound Account successfully.');
         window.location.reload();
     }
   } catch (error) {
