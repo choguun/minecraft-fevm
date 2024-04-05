@@ -276,9 +276,6 @@ modal = createWeb3Modal({
    * @param {KeyboardEvent} event 
    */
   onKeyUp = (event: { code: any; }) => {
-    console.log('keyup')
-    console.log(event)
-    console.log(event.code)
     switch (event.code) {
       case 'KeyW':
         this.input.z = 0;
@@ -331,7 +328,7 @@ modal = createWeb3Modal({
       alert('Please connect wallet.');
     } else if(checkNFT !== true || checkNFT === undefined){
       alert('Please mint land.');
-    }
+    } else {
 
     switch (event.code) {
       case 'Digit0':
@@ -382,6 +379,7 @@ modal = createWeb3Modal({
           this.controls.lock();
         }
         break;
+    }
     }
   }
 
