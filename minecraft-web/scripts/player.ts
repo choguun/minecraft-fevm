@@ -276,6 +276,9 @@ modal = createWeb3Modal({
    * @param {KeyboardEvent} event 
    */
   onKeyUp = (event: { code: any; }) => {
+    console.log('keyup')
+    console.log(event)
+    console.log(event.code)
     switch (event.code) {
       case 'KeyW':
         this.input.z = 0;
