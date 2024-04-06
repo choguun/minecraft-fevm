@@ -23,7 +23,6 @@
 3. Gamification features eg. daily check-in and in-game token reward from quests.
 4. Token Bound Account for Land NFT(inventory) to store in-game items(ERC1155) for accrue value of Land.
 
-
 ### Technologies Used:
 
 * Smart Contract on FEVM
@@ -36,9 +35,9 @@
 Demo:
 https://minecraft-fevm.vercel.app \
 Video:
-- \
+https://www.canva.com/design/DAGBnNV4YGE/m6tZhPHNpbgsZZWye5zcZw/edit \
 Deck:
-- 
+https://www.canva.com/design/DAGBnNV4YGE/m6tZhPHNpbgsZZWye5zcZw/edit \
 
 ### Roadmaps
 1. Sell in-game items
