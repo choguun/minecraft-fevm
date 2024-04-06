@@ -46,3 +46,7 @@ Deck:
 3. Leaderboard
 4. More quests
 5. Mobs and more game mechanics
+
+### Business Model
+1. Sell Land and in-game items
+2. Platform fees
