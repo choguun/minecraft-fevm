@@ -28,31 +28,17 @@ contract Land is ERC721, ERC721Enumerable, ERC721URIStorage, Ownable {
         _;
     }
 
-    function mint(string memory _tokenURI) public payable returns (uint256) {
+    function mint(string memory _tokenURI) public payable {
         require(msg.value >= price, "Insufficient amount");
         require(totalSupply() < supply, "Maximum supply reached");
 
         uint256 tokenId = totalSupply() + 1;
         _safeMint(_msgSender(), tokenId);
         _setTokenURI(tokenId, _tokenURI);
-
-        return tokenId;
     }
 
     function saveUserData(uint256 _tokenId, string memory _data) public onlyWorld {
         _setTokenURI(_tokenId, _data);
-    }
-
-    function configTokenBound(address _registry, address _account, uint256 _chainId) public onlyOwner {
-        registry = _registry;
-        account = _account;
-        chainId = _chainId;
-    }
-
-    function createTokenBound(uint256 _tokenId) public onlyOwner {
-        require(this.ownerOf(_tokenId) == _msgSender(), "Only owner can call this function");
-
-        ERC6551Registry(registry).createAccount(registry, chainId, address(this), _tokenId, 1, '0x');
     }
 
     function supportsInterface(bytes4 interfaceId) public view override(ERC721, ERC721Enumerable, ERC721URIStorage) returns (bool) {

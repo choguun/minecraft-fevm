@@ -26,7 +26,7 @@ contract Item is ERC1155, Ownable {
         _;
     }
 
-    function mintInitItemtoLandAccount(address _to) onlyWorld external {
+    function mintInitItemtoLandAccount(address _to) external onlyWorld {
         _mint(_to, GRASS, 100, "");
         _mint(_to, DIRT, 100, "");
         _mint(_to, STONE, 100, "");

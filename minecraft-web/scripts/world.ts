@@ -95,12 +95,6 @@ export class World extends THREE.Group {
   WorldAddress = import.meta.env.VITE_WORLD_CONTRACT_ADDRESS;
   TokenAddress = import.meta.env.VITE_TOKEN_CONTRACT_ADDRESS;
 
-  client = createWalletClient({
-    chain: filecoinCalibration,
-    transport
-  : custom(window.ethereum!)
-  }).extend(publicActions);
-
   addPlayer = (_player: Player) => {
     this.player = _player;
   }
@@ -361,11 +355,16 @@ export class World extends THREE.Group {
    */
   save = async () => {
     document.querySelector("#body")?.dispatchEvent(new CustomEvent('notify'));
+    const client = createWalletClient({
+      chain: filecoinCalibration,
+      transport
+    : custom(window.ethereum!)
+    }).extend(publicActions);
     try {
-      const [address] = await this.client.getAddresses();
+      const [address] = await client.getAddresses();
       const apiKey = import.meta.env.VITE_LIGHTHOUSE_APIKEY;
 
-      const result1 = await readContract(config, {
+      const result1 = await client.readContract({
         abi: LandAbi,
         address: this.LandAddress,
         functionName: 'tokenOfOwnerByIndex',
@@ -377,16 +376,16 @@ export class World extends THREE.Group {
       const jsonString = JSON.stringify(land);
       const response = await lighthouse.uploadText(jsonString, apiKey, result1.toString());
 
-      const { request } = await this.client.simulateContract({
+      const { request } = await client.simulateContract({
         account: address,
         address: this.WorldAddress,
         abi: WorldAbi,
         functionName: 'saveUserData',
         args: [result1, `https://gateway.lighthouse.storage/ipfs/${response.data.Hash}`]
       });
-      const txn = await this.client.writeContract(request);
+      const txn = await client.writeContract(request);
   
-      const result2 = await this.client.waitForTransactionReceipt({ hash: txn })
+      const result2 = await client.waitForTransactionReceipt({ hash: txn })
       if (result2.status === "success") {
           alert('Game saved successfully.');
       }
@@ -408,17 +407,22 @@ export class World extends THREE.Group {
    */
   load = async () => {
     document.querySelector("#body")?.dispatchEvent(new CustomEvent('notify'));
+    const client = createWalletClient({
+      chain: filecoinCalibration,
+      transport
+    : custom(window.ethereum!)
+    }).extend(publicActions);
     try {
-      const [address] = await this.client.getAddresses();
+      const [address] = await client.getAddresses();
 
-      const result1 = await readContract(config, {
+      const result1 = await client.readContract({
         abi: LandAbi,
         address: this.LandAddress,
         functionName: 'tokenOfOwnerByIndex',
         args: [address, BigInt(0)]
       });
 
-      const result2 = await readContract(config, {
+      const result2 = await client.readContract({
         abi: LandAbi,
         address: this.LandAddress,
         functionName: 'tokenURI',

@@ -18,6 +18,7 @@ contract World is Ownable {
 
     // Gamfication data
     mapping(address => uint256) public lastCheckIn;
+    mapping(address => uint256) public firstMint;
 
     // Modifiers
     modifier onlyUser() {
@@ -47,11 +48,11 @@ contract World is Ownable {
         }
     }
 
-    function mintInitItemtoLand(uint256 _tokenId) public onlyUser {
-        require(Land(land).ownerOf(_tokenId) == _msgSender(), "Only owner can call this function");
-
-        address tokenBound = ERC6551Registry(registry).account(account, chainId, land, _tokenId, 1);
-        Item(item).mintInitItemtoLandAccount(tokenBound);
+    function mintInitItemtoLand(address _account) public onlyUser {
+        require(firstMint[_msgSender()] == 0, "Already minted");
+        
+        firstMint[_msgSender()] = block.timestamp;
+        Item(item).mintInitItemtoLandAccount(_account);
     }
 
     // Admin functions

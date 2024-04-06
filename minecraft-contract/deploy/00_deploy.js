@@ -12,20 +12,20 @@ module.exports = async ({ deployments }) => {
     const world = await deploy("World", {
         from: wallet.address,
         args: [owner],
-        log: true,
+        // log: true,
     });
     console.log("World deployed to: ", world.address);
 
     // deploy token bound account
     const account = await deploy("ERC6551Account", {
         from: wallet.address,
-        log: true,
+        // log: true,
     });
     console.log("Account deployed to: ", account.address);
 
     const registry = await deploy("ERC6551Registry", {
         from: wallet.address,
-        log: true,
+        // log: true,
     });
     console.log("Registry deployed to: ", registry.address);
 
@@ -33,7 +33,7 @@ module.exports = async ({ deployments }) => {
     const land = await deploy("Land", {
         from: wallet.address,
         args: [owner, world.address, registry.address],
-        log: true,
+        // log: true,
     });
     console.log("Land deployed to: ", land.address);
 
@@ -41,7 +41,7 @@ module.exports = async ({ deployments }) => {
     const token = await deploy("Token", {
         from: wallet.address,
         args: [owner, world.address, land.address],
-        log: true,
+        // log: true,
     });
     console.log("Token deployed to: ", token.address);
 
@@ -49,7 +49,7 @@ module.exports = async ({ deployments }) => {
     const item = await deploy("Item", {
         from: wallet.address,
         args: [owner, world.address, ""],
-        log: true,
+        // log: true,
     });
     console.log("Item deployed to: ", item.address);
 }

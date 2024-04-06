@@ -13,9 +13,12 @@ import { readContract } from '@wagmi/core';
 import { createWalletClient, custom, parseEther, publicActions } from 'viem';
 import { config } from './config';
 import { LandAbi } from '../abi/LandAbi';
-import { WorldAbi } from '../abi/WorldAbi';
 import { TokenAbi } from '../abi/TokenAbi';
 import { RegistryAbi } from '../abi/RegistryAbi';
+import { ItemAbi } from '../abi/ItemAbi';
+import { WorldAbi } from '../abi/WorldAbi';
+// import { WorldAbi } from '../abi/WorldAbi';
+// import { AccountAbi } from '../abi/AccountAbi';
 
 declare global {
   interface Window {
@@ -30,6 +33,8 @@ declare global {
     fetchLandId: () => Promise<any>;
     checkAccount: () => Promise<any>;
     createAccount: (tokenId: any) => Promise<void>;
+    fetchInventory: () => Promise<any>;
+    dailyCheckIn: () => Promise<any>;
   }
 }
 
@@ -47,10 +52,12 @@ const tokenFormatter = new Intl.NumberFormat('en-US', {
 // 1. Get a project ID at https://cloud.walletconnect.com
 const projectId = import.meta.env.VITE_PROJECT_ID;
 const LandAddress = import.meta.env.VITE_LAND_CONTRACT_ADDRESS;
-const WorldAddress = import.meta.env.VITE_WORLD_CONTRACT_ADDRESS;
 const TokenAddress = import.meta.env.VITE_TOKEN_CONTRACT_ADDRESS;
-const REGISTRY_CONTRACT = import.meta.env.VITE_REGISTRY_CONTRACT_ADDRESS;
+const RegistryAddress = import.meta.env.VITE_REGISTRY_CONTRACT_ADDRESS;
+const ItemAddress = import.meta.env.VITE_ITEM_CONTRACT_ADDRESS;
 const CHAIN_ID = import.meta.env.VITE_CHAIN_ID;
+const WorldAddress = import.meta.env.VITE_WORLD_CONTRACT_ADDRESS;
+const AccountAddress = import.meta.env.VITE_ACCOUNT_CONTRACT_ADDRESS;
 
 // 2. Create wagmiConfig
 const metadata = {
@@ -133,7 +140,7 @@ window.fetchTokenBalance = async (): Promise<any> => {
     });
 
     // Format the number
-    const formattedNumber = tokenFormatter.format(result);
+    const formattedNumber = tokenFormatter.format(Number(result)/ 10**18);
 
     return formattedNumber;
   } catch (error) {
@@ -169,6 +176,7 @@ window.mintLand = async () => {
   }).extend(publicActions);
   try {
     const [address] = await client.getAddresses();
+
     const { request } = await client.simulateContract({
       account: address,
       address: LandAddress,
@@ -178,52 +186,54 @@ window.mintLand = async () => {
       value: parseEther('0.01')
     });
     const txn = await client.writeContract(request);
-
-    const result = await client.waitForTransactionReceipt({ hash: txn })
+    const result = await client.waitForTransactionReceipt({ hash: txn });
     if (result.status === "success") {
         // window.modelOpen = false;
-        alert('Land minted successfully.');
-        // window.location.reload();
-    }
-  } catch (error) {
-    console.error(error);
-    alert(error);
-  }
-}
+        // alert('Land minted successfully.');
 
-// window.checkAccount = async () => {
-//   function account(
-//     address implementation,
-//     uint256 chainId,
-//     address tokenContract,
-//     uint256 tokenId,
-//     uint256 salt
-// )
-// }
+        // const { request } = await client.simulateContract({
+        //   account: address,
+        //   address: RegistryAddress,
+        //   abi: RegistryAbi,
+        //   functionName: 'createAccount',
+        //   args: [AccountAddress, BigInt(CHAIN_ID), LandAddress, tokenId, BigInt(1), '0x']
+        // });
+    
+        // const txn = await client.writeContract(request);
+        // const result = await client.waitForTransactionReceipt({ hash: txn })
+        // if (result.status === "success") {
+            // alert('Create Token Bound Account successfully.');
 
-window.createAccount = async (tokenId: any) => {
-  const client = createWalletClient({
-    chain: filecoinCalibration,
-    transport
-  : custom(window.ethereum!)
-  }).extend(publicActions);
-  try {
-    const [address] = await client.getAddresses();
-    const { request } = await client.simulateContract({
-      account: address,
-      address: REGISTRY_CONTRACT,
-      abi: RegistryAbi,
-      functionName: 'createAccount',
-      args: [REGISTRY_CONTRACT, BigInt(CHAIN_ID), LandAddress, tokenId, BigInt(1), '0x']
-    });
+            // const tokenId = await client.readContract({
+            //   abi: LandAbi,
+            //   address: LandAddress,
+            //   functionName: 'tokenOfOwnerByIndex',
+            //   args: [address, BigInt(0)]
+            // });
 
-    const txn = await client.writeContract(request);
+            // const account = await client.readContract({
+            //   abi: RegistryAbi,
+            //   address: RegistryAddress,
+            //   functionName: 'account',
+            //   args: [AccountAddress, BigInt(CHAIN_ID), LandAddress, tokenId, BigInt(1)]
+            // });
 
-    const result = await client.waitForTransactionReceipt({ hash: txn })
-    if (result.status === "success") {
-        window.modelOpen = false;
-        alert('Create Token Bound Account successfully.');
-        window.location.reload();
+            const { request } = await client.simulateContract({
+              account: address,
+              address: WorldAddress,
+              abi: WorldAbi,
+              functionName: 'mintInitItemtoLand',
+              args: [address]
+            });
+        
+            const txn = await client.writeContract(request);
+            const result = await client.waitForTransactionReceipt({ hash: txn })
+
+            if (result.status === "success") {
+              alert('Mint Land and Items successfully.');
+              window.location.reload();
+            }
+        // }
     }
   } catch (error) {
     console.error(error);
@@ -239,6 +249,118 @@ window.checkConnectedWallet = async () => {
   }
 
   return connected;
+}
+
+window.checkAccount = async () => {
+  const client = createWalletClient({
+    chain: filecoinCalibration,
+    transport
+  : custom(window.ethereum!)
+  }).extend(publicActions);
+  try {
+    const [address] = await client.getAddresses();
+    const tokenId = await client.readContract({
+      abi: LandAbi,
+      address: LandAddress,
+      functionName: 'tokenOfOwnerByIndex',
+      args: [address, BigInt(0)]
+    });
+    const account = await client.readContract({
+      abi: RegistryAbi,
+      address: RegistryAddress,
+      functionName: 'account',
+      args: [RegistryAddress, BigInt(CHAIN_ID), LandAddress, tokenId, BigInt(1)]
+    });
+    console.log(account);
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+window.fetchInventory = async () => {
+  const client = createWalletClient({
+    chain: filecoinCalibration,
+    transport
+  : custom(window.ethereum!)
+  }).extend(publicActions);
+  try{
+    const [address] = await client.getAddresses();
+
+    const grassAmount = await client.readContract({
+      abi: ItemAbi,
+      address: ItemAddress,
+      functionName: 'balanceOf',
+      args: [address, BigInt(1)]
+    });
+
+    const dirtAmount = await client.readContract({
+      abi: ItemAbi,
+      address: ItemAddress,
+      functionName: 'balanceOf',
+      args: [address, BigInt(1)]
+    });
+
+    const stoneAmount = await client.readContract({
+      abi: ItemAbi,
+      address: ItemAddress,
+      functionName: 'balanceOf',
+      args: [address, BigInt(1)]
+    });
+
+    const coaloreAmount = await client.readContract({
+      abi: ItemAbi,
+      address: ItemAddress,
+      functionName: 'balanceOf',
+      args: [address, BigInt(1)]
+    });
+
+    const treeAmount = await client.readContract({
+      abi: ItemAbi,
+      address: ItemAddress,
+      functionName: 'balanceOf',
+      args: [address, BigInt(1)]
+    });
+
+    const leavesAmount = await client.readContract({
+      abi: ItemAbi,
+      address: ItemAddress,
+      functionName: 'balanceOf',
+      args: [address, BigInt(1)]
+    });
+
+    return [grassAmount, dirtAmount, stoneAmount, coaloreAmount, treeAmount, leavesAmount];
+  } catch (error) {
+    console.error(error);
+    alert(error);
+  }
+}
+
+window.dailyCheckIn = async () => {
+  const client = createWalletClient({
+    chain: filecoinCalibration,
+    transport
+  : custom(window.ethereum!)
+  }).extend(publicActions);
+  try {
+    const [address] = await client.getAddresses();
+
+    const { request } = await client.simulateContract({
+      account: address,
+      address: WorldAddress,
+      abi: WorldAbi,
+      functionName: 'dailyCheckIn'
+    });
+
+    const txn = await client.writeContract(request);
+    const result = await client.waitForTransactionReceipt({ hash: txn });
+    if (result.status === "success") {
+      alert('Check-in successfully.');
+    }
+  } catch (error) {
+    console.error(error);
+    // alert(error);
+    alert('You have already checked in today.');
+  }
 }
 
 Alpine.start();
