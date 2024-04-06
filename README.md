@@ -37,7 +37,7 @@ https://minecraft-fevm.vercel.app \
 Video:
 https://www.canva.com/design/DAGBnNV4YGE/m6tZhPHNpbgsZZWye5zcZw/edit \
 Deck:
-https://www.canva.com/design/DAGBnNV4YGE/m6tZhPHNpbgsZZWye5zcZw/edit \
+https://www.canva.com/design/DAGBnNV4YGE/m6tZhPHNpbgsZZWye5zcZw/edit
 
 ### Roadmaps
 1. Sell in-game items
@@ -49,3 +49,5 @@ https://www.canva.com/design/DAGBnNV4YGE/m6tZhPHNpbgsZZWye5zcZw/edit \
 ### Business Model
 1. Sell Land and in-game items
 2. Platform fees
+
+### Deployed Smart Contract
