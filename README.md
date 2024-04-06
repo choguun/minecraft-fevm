@@ -21,7 +21,7 @@
 1. Mint Land(ERC721) to access your land and create a token bound account(ERC6551) to store assets in land nft.
 2. Save and Load game data on-chain and decentralize with FEVM and IPFS(lighthouse.storage).
 3. Gamification features eg. daily check-in and in-game token reward from quests.
-4. Token Bound Account for Land NFT(inventory) to store in-game items(ERC1155) for accrue value of Land.
+4. In-game items(ERC1155) for accrue value of Land.
 
 ### Technologies Used:
 
@@ -45,6 +45,7 @@ https://www.canva.com/design/DAGBnNV4YGE/m6tZhPHNpbgsZZWye5zcZw/edit
 3. Leaderboard
 4. More quests
 5. Mobs and more game mechanics
+6. Token Bound Account for Land NFT(inventory) to store in-game items(ERC1155) for accrue value of Land.
 
 ### Business Model
 1. Sell Land and in-game items
