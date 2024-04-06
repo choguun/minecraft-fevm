@@ -51,3 +51,7 @@ https://www.canva.com/design/DAGBnNV4YGE/m6tZhPHNpbgsZZWye5zcZw/edit
 2. Platform fees
 
 ### Deployed Smart Contract
+<b>World Contract</b> https://calibration.filscan.io/en/address/0x16BBb4094d0c30F46Df8be103413da8fe96ad387 \
+<b>Land Contract</b> https://calibration.filscan.io/en/address/0x57dFCd3BA1f45Aba4dEe9cC91Dcc5B55C0D5b619 \
+<b>Token Contract</b> https://calibration.filscan.io/en/address/0xdb5ED0F1de2aDA99F90944e997731a2629Cd9e98 \
+<b>Item Contract</b> https://calibration.filscan.io/en/address/0xC04ee655a7DD5c47d57DD78a40C5461878548D91
