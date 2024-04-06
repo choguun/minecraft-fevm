@@ -24,7 +24,7 @@
 4. Token Bound Account for Land NFT(inventory) to store in-game items(ERC1155) for accrue value of Land.
 
 
-### Components:
+### Technologies Used:
 
 * Smart Contract on FEVM
 * IPFS Storage by lighthouse.storage
