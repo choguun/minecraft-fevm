@@ -36,7 +36,7 @@
 ![How it works](/howitwork.png "How it works")
 
 Demo:
-https://minecraft-fevm.vercel.app \
+https://voxelverse.vercel.app \
 Video:
 https://www.canva.com/design/DAGBnNV4YGE/m6tZhPHNpbgsZZWye5zcZw/edit \
 Deck:
