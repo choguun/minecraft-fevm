@@ -8,6 +8,8 @@
 
 * We are building a decentralized and on-chain Minecraft-like game in which users own and monetize their assets on-chain by leveraging blockchain and IPFS technology.
 
+![GUI](/gui.png "GUI")
+
 ### How to deploy minecraft-contract
 
 * npx hradhat deploy
