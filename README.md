@@ -30,7 +30,7 @@
 
 * Smart Contract on FEVM
 * IPFS Storage by lighthouse.storage
-* Game on Web by WebGL
+* Web-based game by WebGL
 
 ### How it works:
 ![How it works](/howitwork.png "How it works")
