@@ -90,8 +90,12 @@ const modal =  createWeb3Modal({
 /*
 * Alpine.js setup
 */
+
+Alpine.store('myStore', {
+  inventory: [0, 0, 0, 0, 0, 0]
+});
+
 window.Alpine = Alpine;
-window.modelOpen = false;
 
 window.walletAddress = async (): Promise<any> => {
   const client = createWalletClient({
@@ -394,7 +398,7 @@ controls.update();
 const scene = new THREE.Scene();
 const physics = new Physics(scene);
 const world = new World();
-const player = new Player(scene, world);
+const player = new Player(scene, world, Alpine);
 scene.add(world);
 world.addPlayer(player);
 

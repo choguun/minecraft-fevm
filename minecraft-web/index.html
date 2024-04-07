@@ -10,10 +10,10 @@
   </head>
   <body x-data>
     <!-- {grass: 0, dirt:0, stone:0, coalore:0, tree:0, leaves:0} -->
-    <div id="body" x-data="{ isMinting: false, modelOpen: false, isConnected: false, isConnected2: false, checkConnection: false, tokenBalance: 0, landId: 0, isShowToast:false, inventory: [0,0,0,0,0,0], dailyCheckInCount: 0 }" @notify="isShowToast=!isShowToast" @hideToast="isShowToast=false">
+    <div id="body" x-data="{ isMinting: false, modelOpen: false, isConnected: false, isConnected2: false, checkConnection: false, tokenBalance: 0, landId: 0, isShowToast:false, dailyCheckInCount: 0 }" @notify="isShowToast=!isShowToast" @hideToast="isShowToast=false">
       
       <!-- Navbar -->
-      <nav x-effect="console.log(isConnected); isConnected2 = await checkConnectedWallet(); console.log(isConnected2); if(isConnected || isConnected2){modelOpen = !await NFTBalance(); tokenBalance = await fetchTokenBalance(); if(!modelOpen){landId = await fetchLandId(); inventory = await fetchInventory();}}" id="navbar">
+      <nav x-effect="console.log(isConnected); isConnected2 = await checkConnectedWallet(); console.log(isConnected2); if(isConnected || isConnected2){modelOpen = !await NFTBalance(); tokenBalance = await fetchTokenBalance(); if(!modelOpen){landId = await fetchLandId(); $store.myStore.inventory = await fetchInventory();}}" id="navbar">
         <div class="mt-1 ml-1 p-2 inline-block bg-green-500">
           <span>In-Game Token</span>
           <span><span x-text="tokenBalance"></span> $CRAFT</span>
@@ -97,37 +97,37 @@
               <div class="inventory-item" id="inventory-1">
                 <img class="inventory-icon w-full h-full p-2" src="textures/grass.png" />
                 <div class="absolute z-100" style="margin-top: -20px;">
-                  <span class="text-white inline-block text-sm">x<span class="text-white inline-block text-sm" x-text="inventory[0]"></span></span>
+                  <span class="text-white inline-block text-sm">x<span class="text-white inline-block text-sm" x-text="$store.myStore.inventory[0]"></span></span>
                 </div>
               </div>
               <div class="inventory-item" id="inventory-2">
                 <img class="inventory-icon w-full h-full p-2" src="textures/dirt.png" />
                 <div class="absolute z-100" style="margin-top: -20px;">
-                  <span class="text-white inline-block text-sm">x<span class="text-white inline-block text-sm" x-text="inventory[1]"></span></span>
+                  <span class="text-white inline-block text-sm">x<span class="text-white inline-block text-sm" x-text="$store.myStore.inventory[1]"></span></span>
                 </div>
               </div>
               <div class="inventory-item" id="inventory-3">
                 <img class="inventory-icon w-full h-full p-2" src="textures/stone.png" />
                 <div class="absolute z-100" style="margin-top: -20px;">
-                  <span class="inventory-count text-white inline-block text-sm">x<span class="text-white inline-block text-sm" x-text="inventory[2]"></span></span>
+                  <span class="inventory-count text-white inline-block text-sm">x<span class="text-white inline-block text-sm" x-text="$store.myStore.inventory[2]"></span></span>
                 </div>
               </div>
               <div class="inventory-item" id="inventory-4">
                 <img class="inventory-icon w-full h-full p-2" src="textures/coal_ore.png" />
                 <div class="absolute z-100" style="margin-top: -20px;">
-                  <span class="inventory-count text-white inline-block text-sm">x<span class="text-white inline-block text-sm" x-text="inventory[3]"></span></span>
+                  <span class="inventory-count text-white inline-block text-sm">x<span class="text-white inline-block text-sm" x-text="$store.myStore.inventory[3]"></span></span>
                 </div>
               </div>
               <div class="inventory-item" id="inventory-5">
                 <img class="inventory-icon w-full h-full p-2" src="textures/tree_top.png" />
                 <div class="absolute z-100" style="margin-top: -20px;">
-                  <span class="inventory-count text-white inline-block text-sm">x<span class="text-white inline-block text-sm" x-text="inventory[4]"></span></span>
+                  <span class="inventory-count text-white inline-block text-sm">x<span class="text-white inline-block text-sm" x-text="$store.myStore.inventory[4]"></span></span>
                 </div>
               </div>
               <div class="inventory-item" id="inventory-6">
                 <img class="inventory-icon w-full h-full p-2" src="textures/leaves.png" />
                 <div class="absolute z-100" style="margin-top: -20px;">
-                  <span class="inventory-count text-white inline-block text-sm">x<span class="text-white inline-block text-sm" x-text="inventory[5]"></span></span>
+                  <span class="inventory-count text-white inline-block text-sm">x<span class="text-white inline-block text-sm" x-text="$store.myStore.inventory[5]"></span></span>
                 </div>
               </div>
             </div>

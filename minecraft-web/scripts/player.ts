@@ -46,9 +46,11 @@ export class Player extends THREE.Vector3 {
   boundsHelper: THREE.Mesh<THREE.CylinderGeometry, THREE.MeshBasicMaterial, THREE.Object3DEventMap>;
   world: World;
   repeat: any;
+  Alpine: any;
 
-  constructor(scene: THREE.Scene, world: World) {
+  constructor(scene: THREE.Scene, world: World, Alpine: any) {
     super();
+    this.Alpine = Alpine;
     this.world = world;
     this.position.set(32, 64, 32);
     this.cameraHelper.visible = false;
@@ -416,6 +418,29 @@ modal = createWeb3Modal({
             this.selectedCoords.z,
             this.activeBlockId
           );
+
+          let grass = this.Alpine.store('myStore').inventory[0];
+          let dirt = this.Alpine.store('myStore').inventory[1];
+          let stone = this.Alpine.store('myStore').inventory[2];
+          let coalOre = this.Alpine.store('myStore').inventory[3];
+          let treeTop = this.Alpine.store('myStore').inventory[4];
+          let leaves = this.Alpine.store('myStore').inventory[5];
+
+          if(this.activeBlockId === 1) {
+            grass = grass - BigInt(1);
+          } else if (this.activeBlockId === 2) {
+            dirt = dirt - BigInt(1);
+          } else if (this.activeBlockId === 3) {
+            stone = stone - BigInt(1);
+          } else if (this.activeBlockId === 4) {
+            coalOre = coalOre - BigInt(1);
+          } else if (this.activeBlockId === 5) {
+            treeTop = treeTop - BigInt(1);
+          } else if (this.activeBlockId === 6) {
+            leaves = leaves - BigInt(1);
+          }
+
+          this.Alpine.store('myStore').inventory = [grass, dirt, stone, coalOre, treeTop, leaves];
         }
 
         // If the tool isn't currently animating, trigger the animation
