@@ -16,6 +16,7 @@
   },
   "dependencies": {
     "@lighthouse-web3/sdk": "^0.3.0",
+    "@vercel/analytics": "^1.2.2",
     "@wagmi/connectors": "^4.1.18",
     "@wagmi/core": "^2.6.9",
     "@web3modal/wagmi": "^4.1.1",

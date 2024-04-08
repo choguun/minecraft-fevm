@@ -19,6 +19,9 @@ import { ItemAbi } from '../abi/ItemAbi';
 import { WorldAbi } from '../abi/WorldAbi';
 // import { WorldAbi } from '../abi/WorldAbi';
 // import { AccountAbi } from '../abi/AccountAbi';
+import { inject } from "@vercel/analytics"
+
+inject();
 
 declare global {
   interface Window {
