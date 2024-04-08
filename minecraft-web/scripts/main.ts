@@ -20,8 +20,8 @@ import { WorldAbi } from '../abi/WorldAbi';
 // import { WorldAbi } from '../abi/WorldAbi';
 // import { AccountAbi } from '../abi/AccountAbi';
 import { inject } from "@vercel/analytics";
-import { SpeedInsights } from "@vercel/speed-insights/next";
-
+import { injectSpeedInsights } from '@vercel/speed-insights';
+ 
 inject();
 injectSpeedInsights();
 
