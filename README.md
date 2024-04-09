@@ -12,7 +12,7 @@
 
 ### How to deploy minecraft-contract
 
-* npx hradhat deploy
+* npx hardhat deploy
 * node script/world_setup.js
 
 ### How to run minecraft-web
