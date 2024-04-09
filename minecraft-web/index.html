@@ -1,6 +1,15 @@
 <!doctype html>
 <html lang="en">
   <head>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-BT82M16NBL"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'G-BT82M16NBL');
+    </script>
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/logo.jpeg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -182,24 +191,23 @@
       <!-- Modal Connect Wallet -->
       <div x-show="!isConnected" class="fixed inset-0 z-100 overflow-y-auto" aria-labelledby="modal-title" role="dialog" aria-modal="true">
         <div class="flex items-end justify-center min-h-screen px-4 text-center md:items-center sm:block sm:p-0">
-            <div x-cloak x-show="!isConnected" 
+            <div x-cloak x-show="!isConnected"
                 x-transition:enter="transition ease-out duration-300 transform"
-                x-transition:enter-start="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95" 
+                x-transition:enter-start="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
                 x-transition:enter-end="opacity-100 translate-y-0 sm:scale-100"
                 x-transition:leave="transition ease-in duration-200 transform"
-                x-transition:leave-start="opacity-100 translate-y-0 sm:scale-100" 
+                x-transition:leave-start="opacity-100 translate-y-0 sm:scale-100"
                 x-transition:leave-end="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
                 class="inline-block w-full max-w-xl p-8 my-20 overflow-hidden text-left transition-all transform bg-white rounded-lg shadow-xl 2xl:max-w-2xl"
             >
-
                 <div class="flex items-center justify-between space-x-4">
                     <h1 class="text-xl font-medium text-gray-800 mx-auto cursor-pointer" @click="isConnected=true">Connect Wallet</h1>
                 </div>
-                  <div class="mt-5">
-                    <div class="flex items-center justify-between mt-3">
-                      <w3m-button data-check="abc" @click="isConnected=true" id="wallet-btn" class="text-center mx-auto px-3 py-2"/>
-                    </div>
+                <div class="mt-5">
+                  <div class="flex items-center justify-between mt-3">
+                    <w3m-button data-check="abc" @click="isConnected=true" id="wallet-btn" class="text-center mx-auto px-3 py-2"/>
                   </div>
+                </div>
             </div>
         </div>
       </div>

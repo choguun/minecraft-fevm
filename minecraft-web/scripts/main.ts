@@ -21,7 +21,10 @@ import { WorldAbi } from '../abi/WorldAbi';
 // import { AccountAbi } from '../abi/AccountAbi';
 import { inject } from "@vercel/analytics";
 import { injectSpeedInsights } from '@vercel/speed-insights';
- 
+import { UAParser } from 'ua-parser-js';
+
+const parser = new UAParser();
+console.log(parser.getDevice());
 inject();
 injectSpeedInsights();
 
