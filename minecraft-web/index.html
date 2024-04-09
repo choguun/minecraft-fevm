@@ -273,13 +273,21 @@
       </div>
       <!-- Modal Mint Land -->
 
-      <!-- Toast -->
+      <!-- Loading -->
       <div x-show="isShowToast" id="toast-container" class="fixed z-100 overflow-y-auto bg-black inset-0 opacity-90 flex items-center justify-center">
         <span class="text-4xl text-white mx-auto animate-pulse">
           Loading...
         </span>
       </div>
-      <!-- Toast -->
+      <!-- Loading -->
+
+       <!-- Detect Mobile -->
+       <div x-show="$store.myStore.showMessage" id="toast-container" class="fixed z-100 overflow-y-auto bg-black inset-0 opacity-90 flex items-center justify-center">
+        <span class="text-5xl text-white mx-auto text-center animate-pulse">
+          Please open in desktop browser
+        </span>
+      </div>
+      <!-- Detect Mobile -->
     </div>
     <script type="module" src="./scripts/main.ts"></script>
   </body>

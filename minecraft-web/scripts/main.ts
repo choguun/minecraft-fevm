@@ -24,7 +24,7 @@ import { injectSpeedInsights } from '@vercel/speed-insights';
 import { UAParser } from 'ua-parser-js';
 
 const parser = new UAParser();
-console.log(parser.getDevice());
+
 inject();
 injectSpeedInsights();
 
@@ -100,8 +100,13 @@ const modal =  createWeb3Modal({
 */
 
 Alpine.store('myStore', {
-  inventory: [0, 0, 0, 0, 0, 0]
+  inventory: [0, 0, 0, 0, 0, 0],
+  showMessage: false
 });
+
+if(parser.getDevice().type === 'mobile' || parser.getDevice().type === 'tablet') {
+  Alpine.store('myStore').showMessage = true;
+}
 
 window.Alpine = Alpine;
 
