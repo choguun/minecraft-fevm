@@ -392,6 +392,13 @@ modal = createWeb3Modal({
             this.controls.lock();
           }
           break;
+        case 'KeyQ':
+          if(this.controls.isLocked) {
+            this.controls.unlock();
+          } else {
+            this.controls.lock();
+          }
+          break;
       }
     }
   }
