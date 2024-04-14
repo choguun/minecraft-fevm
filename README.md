@@ -38,7 +38,7 @@
 Demo:
 https://www.voxelverses.xyz \
 Video:
-https://www.canva.com/design/DAGBnNV4YGE/m6tZhPHNpbgsZZWye5zcZw/edit \
+https://www.loom.com/share/1a08f8c734a9464c93a64276b26800bf?sid=9f3480cf-9841-460d-8c42-afacbad28acb \
 Deck:
 https://www.canva.com/design/DAGBnNV4YGE/m6tZhPHNpbgsZZWye5zcZw/edit
 
